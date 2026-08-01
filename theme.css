@@ -586,7 +586,7 @@ body .h-scroll-handle {
 /* ===================== Background System ===================== */
 /*
    Priority (high wins): preset-true-glass > bg-custom > bg-solid > bg-gradient > bg-auto
-   bg-auto: dark = base64 wallpaper (dimmed), light = soft gradient
+   bg-auto: dark = accent-tinted wallpaper, light = soft gradient
    All styles work in both dark and light mode.
 */
 
@@ -627,14 +627,23 @@ body:not(.is-mobile) .setting-item[data-id*="disable-drawer-dimming"] {
 }
 
 /* === AUTO (default) === */
-/* Dark auto: base64 wallpaper, dimmed */
-body.theme-dark:not(.bg-gradient):not(.bg-solid):not(.bg-custom):not(.preset-true-glass) .app-container::before {
-  background-image: var(--background-image-base64);
-  filter: brightness(0.54) blur(var(--background-blur));
+/* Dark auto: base64 wallpaper, accent-tinted and dimmed */
+body.theme-dark:not(.css-settings-manager):not(.bg-gradient):not(.bg-solid):not(.bg-custom):not(.preset-true-glass) .app-container::before,
+body.theme-dark.bg-auto:not(.preset-true-glass) .app-container::before {
+  background-image:
+    linear-gradient(hsla(var(--color-accent-hsl, 255, 85%, 65%), 0.68),
+      hsla(var(--color-accent-hsl, 255, 85%, 65%), 0.68)),
+    radial-gradient(circle at 50% 46%,
+      hsla(var(--color-accent-hsl, 255, 85%, 65%), 0.46) 0%,
+      transparent 62%),
+    var(--background-image-base64);
+  background-blend-mode: color, screen, normal;
+  filter: brightness(0.68) saturate(1.18) blur(var(--background-blur));
 }
 
 /* Light auto: soft gradient */
-body.theme-light:not(.bg-gradient):not(.bg-solid):not(.bg-custom):not(.preset-true-glass) .app-container::before {
+body.theme-light:not(.css-settings-manager):not(.bg-gradient):not(.bg-solid):not(.bg-custom):not(.preset-true-glass) .app-container::before,
+body.theme-light.bg-auto:not(.preset-true-glass) .app-container::before {
   background-image: linear-gradient(var(--gradient-angle), var(--gradient-from) 0%, var(--gradient-to) 100%);
   background-color: unset;
   filter: blur(var(--background-blur));
